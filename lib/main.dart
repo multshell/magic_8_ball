@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -54,6 +55,7 @@ class _MagicBallPageState extends State<MagicBallPage> {
     setState(() {
       index = Random().nextInt(nowPlaying.length - 1);
       print(index);
+      print(nowPlaying[index]['vote_average']);
     });
   }
 
@@ -91,9 +93,26 @@ class _MagicBallPageState extends State<MagicBallPage> {
           if (nowPlaying.length != 0)
             Card(
               margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: ListTile(
-                leading: Icon(Icons.movie),
-                title: Text(nowPlaying[index]['title']),
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.movie),
+                    title: Text(nowPlaying[index]['title']),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: RatingBarIndicator(
+                      rating: nowPlaying[index]['vote_average'].toDouble(),
+                      itemBuilder: (context, index) => const Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      itemCount: 10,
+                      itemSize: 20.0,
+                      direction: Axis.horizontal,
+                    ),
+                  ),
+                ],
               ),
             ),
         ],
